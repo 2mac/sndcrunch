@@ -33,7 +33,7 @@ The most basic usage is an input and output file:
 
 The formats supported by sndcrunch are:
 
-- AIF with the extensions aif, aifc, and aiff
+- AIFF with the extensions aif, aifc, and aiff
 - AU with the extensions au and snd
 - CAF with the extension caf
 - FLAC with the extension flac
