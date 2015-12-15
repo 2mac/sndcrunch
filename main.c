@@ -38,7 +38,7 @@
 out_path.\n\n\
 OPTIONS:\n\
 \t-h, --help\t\tPrints this help message and exits\n\
-\t-l, --loss=LEVEL\tSets the loss level (default 8)\n\
+\t-l, --loss=LEVEL\tSets the loss level (default 10)\n\
 \t-v, --version\t\tPrints version info and exits\n"
 
 #define VERSION_INFO VERSION_STRING "\n\
@@ -59,7 +59,7 @@ int
 main (int argc, char *argv[])
 {
   int rc = 0;
-  unsigned short loss = 8;
+  unsigned short loss = 10;
 
   struct option longopts[] =
     {

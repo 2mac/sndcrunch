@@ -51,7 +51,7 @@ be set using the `-l` or `--loss` options as so:
 
 Each sound input seems to have its own "sweet spot" where the output is most
 ideal. A loss level too high produces unpleasant noise, and a loss level too
-low just makes a scratchy version of the original. The default loss level is 8
+low just makes a scratchy version of the original. The default loss level is 10
 which seems to be a decent level for human speech sounds, which is the original
 purpose of this program.
 
