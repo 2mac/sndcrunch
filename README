@@ -11,6 +11,10 @@ Autotools, and libsndfile. On Debian-based systems, you can get these like so:
 
     # apt-get install build-essential automake autoconf libsndfile-dev
 
+You also need Delwink's
+[libpfxtree](http://delwink.com/software/libpfxtree.html). Follow its
+instructions for installation.
+
 sndcrunch uses the GNU build process:
 
     $ ./autogen.sh
