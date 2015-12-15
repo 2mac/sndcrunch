@@ -187,7 +187,7 @@ sc_crunch (const char *in_path, const char *out_path, unsigned short loss)
     {
       for (int channel = 0; channel < in_info.channels; ++channel)
 	{
-	  short avg = 0;
+	  long avg = 0;
 
 	  for (unsigned short i = 0; i < read; ++i)
 	    avg += frame[channel + (i * in_info.channels)];
@@ -195,7 +195,7 @@ sc_crunch (const char *in_path, const char *out_path, unsigned short loss)
 	  avg /= loss;
 
 	  for (unsigned short i = 0; i < read; ++i)
-	    frame[channel + (i * in_info.channels)] = avg;
+	    frame[channel + (i * in_info.channels)] = (short) avg;
 	}
 
       sf_count_t written = sf_writef_short (out_file, frame, loss);
