@@ -1,0 +1,72 @@
+sndcrunch
+=========
+
+A simple audio bit crunching tool.
+
+To Build
+--------
+
+sndcrunch uses the GNU build process:
+
+    $ ./autogen.sh
+    $ ./configure
+    $ make
+
+To Install
+----------
+
+After building (see above):
+
+    # make install
+
+Using sndcrunch
+---------------
+
+The most basic usage is an input and output file:
+
+    $ sndcrunch infile.wav outfile.wav
+
+The formats supported by sndcrunch are:
+
+- AIF with the extensions aif, aifc, and aiff
+- AU with the extensions au and snd
+- CAF with the extension caf
+- FLAC with the extension flac
+- Ogg Vorbis with the extension ogg
+- WAV with the extensions wav and wave
+
+The trickiest part of using sndcrunch is setting the right loss level. It can
+be set using the `-l` or `--loss` options as so:
+
+    $ sndcrunch --loss 5 infile.flac outfile.ogg
+
+Each sound input seems to have its own "sweet spot" where the output is most
+ideal. A loss level too high produces unpleasant noise, and a loss level too
+low just makes a scratchy version of the original. The default loss level is 8
+which seems to be a decent level for human speech sounds, which is the original
+purpose of this program.
+
+The minimum loss level of 1 would actually leave the input unaltered. Since any
+combination of the input and output extensions is allowed, you could actually
+use sndcrunch as a simple audio converter if you wanted, but it only outputs
+16-bit audio, so it would not be the ideal transcoder (actually, it's however
+long the `short` type is on your implementation, but libsndfile assumes that it
+will be 16 bits; perhaps consider complaining to the author of that library).
+
+For more information on sndcrunch's CLI, use `--help`.
+
+Hacking
+-------
+
+sndcrunch uses the GNU coding style for C with a strict 79-column limit in the
+source code. Indentations are two spaces, and tab characters are eight
+spaces. It is polite to use a tab character any time eight spaces would be used
+in an indentation, but it is not required.
+
+License
+-------
+
+sndcrunch is free (libre) software, released under the terms of version 3 of
+the GNU Affero General Public License. You are free to copy, modify, and
+redistribute this software and use it for whatever purpose. See
+[COPYING](COPYING) for details.
