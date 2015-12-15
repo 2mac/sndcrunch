@@ -15,10 +15,12 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <errno.h>
 #include <limits.h>
 #include <sndfile.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <getopt.h>
 
@@ -53,6 +55,20 @@ usage (int rc)
 {
   puts (USAGE_INFO);
   exit (rc);
+}
+
+static void
+check_file_error (const char *path, const char *mode)
+{
+  FILE *f = fopen (path, mode);
+  if (!f)
+    {
+      int rc = errno;
+      fprintf (stderr, PROG ": %s: %s\n", path, strerror (rc));
+      exit (rc);
+    }
+
+  fclose (f);
 }
 
 int
@@ -118,15 +134,8 @@ main (int argc, char *argv[])
     {
       if (SF_ERR_SYSTEM == rc)
 	{
-	  FILE *temp = fopen (argv[optind], "r");
-	  if (NULL == temp)
-	    {
-	      fprintf (stderr, PROG ": %s: No such file or directory\n",
-		       argv[optind]);
-	      return rc;
-	    }
-
-	  fclose (temp);
+	  check_file_error (argv[optind], "r");
+	  check_file_error (argv[optind + 1], "a");
 	}
 
       fprintf (stderr, PROG ": %s\n", sc_error_string (rc));
@@ -134,6 +143,5 @@ main (int argc, char *argv[])
     }
 
   sc_cleanup ();
-
   return 0;
 }
