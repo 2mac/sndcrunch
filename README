@@ -6,6 +6,11 @@ A simple audio bit crunching tool.
 To Build
 --------
 
+You must first satisfy the dependencies. You need a C compiler, the GNU
+Autotools, and libsndfile. On Debian-based systems, you can get these like so:
+
+    # apt-get install build-essential automake autoconf libsndfile-dev
+
 sndcrunch uses the GNU build process:
 
     $ ./autogen.sh
