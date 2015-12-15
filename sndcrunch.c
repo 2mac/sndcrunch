@@ -156,7 +156,7 @@ sc_crunch (const char *in_path, const char *out_path, unsigned short loss)
       goto end;
     }
 
-  for (int type = SF_STR_TITLE; type <= SF_STR_GENRE; ++type)
+  for (int type = SF_STR_FIRST; type <= SF_STR_LAST; ++type)
     {
       const char *orig_string;
       if (type == SF_STR_SOFTWARE)
