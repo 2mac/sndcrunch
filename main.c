@@ -87,11 +87,12 @@ main (int argc, char *argv[])
 
   if (argc > 1)
     {
-      long temploss;
       int c, longindex;
       while ((c = getopt_long (argc, argv, "hl:v", longopts, &longindex))
 	     != -1)
 	{
+	  long temploss;
+
 	  switch (c)
 	    {
 	    case 'h':
