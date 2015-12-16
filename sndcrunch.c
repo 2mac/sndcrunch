@@ -192,7 +192,7 @@ sc_crunch (const char *in_path, const char *out_path, unsigned short loss)
 	  for (unsigned short i = 0; i < read; ++i)
 	    avg += frame[channel + (i * in_info.channels)];
 
-	  avg /= loss;
+	  avg /= read;
 
 	  for (unsigned short i = 0; i < read; ++i)
 	    frame[channel + (i * in_info.channels)] = (short) avg;
