@@ -198,8 +198,8 @@ sc_crunch (const char *in_path, const char *out_path, unsigned short loss)
 	    frame[channel + (i * in_info.channels)] = (short) avg;
 	}
 
-      sf_count_t written = sf_writef_short (out_file, frame, loss);
-      if (!written)
+      sf_count_t written = sf_writef_short (out_file, frame, read);
+      if (written != read)
 	{
 	  rc = sf_error (out_file);
 	  goto end;
