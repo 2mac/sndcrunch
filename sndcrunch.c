@@ -47,8 +47,11 @@ sc_error_string (int rc)
       case SC_EALLOC:
 	return "Out of memory";
 
-      case SC_EPATH:
+      case SC_ENULLPATH:
 	return "Null path supplied";
+
+      case SC_ESAMEPATH:
+	return "Input and output paths are the same";
 
       default:
 	return "Unknown error";
@@ -98,7 +101,10 @@ sc_crunch (const char *in_path, const char *out_path, unsigned short loss)
   SNDFILE *in_file = NULL, *out_file = NULL;
 
   if (!in_path || !out_path)
-    return SC_EPATH;
+    return SC_ENULLPATH;
+
+  if (0 == strcmp (in_path, out_path))
+    return SC_ESAMEPATH;
 
   if (!formats)
     {

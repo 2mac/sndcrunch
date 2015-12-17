@@ -20,8 +20,9 @@
 
 enum sc_error
   {
-    SC_EALLOC = -1,
-    SC_EPATH  = -2
+    SC_EALLOC    = -1,
+    SC_ENULLPATH = -2,
+    SC_ESAMEPATH = -3
   };
 
 const char *
