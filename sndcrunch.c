@@ -158,10 +158,13 @@ sc_crunch (const char *in_path, const char *out_path, unsigned short loss)
 
   for (int type = SF_STR_FIRST; type <= SF_STR_LAST; ++type)
     {
+      char sw[64];
       const char *orig_string;
-      if (type == SF_STR_SOFTWARE)
+
+      if (SF_STR_SOFTWARE == type)
 	{
-	  orig_string = VERSION_STRING;
+	  sprintf (sw, "%s at loss level %hu", VERSION_STRING, loss);
+	  orig_string = sw;
 	}
       else
 	{
