@@ -15,9 +15,11 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <ctype.h>
 #include <errno.h>
 #include <limits.h>
 #include <sndfile.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -57,6 +59,12 @@ usage (int rc)
   exit (rc);
 }
 
+static bool
+fexists (const char *path)
+{
+  return 0 == access (path, F_OK);
+}
+
 static void
 check_file_error (const char *path, const char *mode)
 {
@@ -74,12 +82,14 @@ check_file_error (const char *path, const char *mode)
 int
 main (int argc, char *argv[])
 {
+  bool force = false;
   int rc = 0;
   unsigned short loss = 10;
 
   struct option longopts[] =
     {
       {"help", no_argument, 0, 'h'},
+      {"force", no_argument, 0, 'f'},
       {"loss", required_argument, 0, 'l'},
       {"version", no_argument, 0, 'v'},
       {0, 0, 0, 0}
@@ -88,7 +98,7 @@ main (int argc, char *argv[])
   if (argc > 1)
     {
       int c, longindex;
-      while ((c = getopt_long (argc, argv, "hl:v", longopts, &longindex))
+      while ((c = getopt_long (argc, argv, "hfl:v", longopts, &longindex))
 	     != -1)
 	{
 	  long temploss;
@@ -97,6 +107,10 @@ main (int argc, char *argv[])
 	    {
 	    case 'h':
 	      usage (0);
+
+	    case 'f':
+	      force = true;
+	      break;
 
 	    case 'l':
 	      rc = sscanf (optarg, "%lu", &temploss);
@@ -130,13 +144,27 @@ main (int argc, char *argv[])
   if ((argc - optind) != 2)
     usage (1);
 
-  rc = sc_crunch (argv[optind], argv[optind + 1], loss);
+  const char *in_path = argv[optind];
+  const char *out_path = argv[optind + 1];
+
+  if (!force && fexists (out_path))
+    {
+      printf ("%s exists. Overwrite? [y/N] ", out_path);
+      int c = tolower (getchar ());
+      if ('y' != c)
+	return 4;
+
+      while (c != '\n')
+	c = getchar (); // clear input line
+    }
+
+  rc = sc_crunch (in_path, out_path, loss);
   if (rc)
     {
       if (SF_ERR_SYSTEM == rc)
 	{
-	  check_file_error (argv[optind], "r");
-	  check_file_error (argv[optind + 1], "a");
+	  check_file_error (in_path, "r");
+	  check_file_error (out_path, "a");
 	}
 
       fprintf (stderr, PROG ": %s\n", sc_error_string (rc));
