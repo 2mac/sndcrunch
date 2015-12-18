@@ -102,7 +102,7 @@ main (int argc, char *argv[])
       while ((c = getopt_long (argc, argv, "hfl:v", longopts, &longindex))
 	     != -1)
 	{
-	  long temploss;
+	  unsigned long temploss;
 
 	  switch (c)
 	    {
