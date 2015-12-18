@@ -41,6 +41,7 @@
   PROG " reads the audio file in_file and writes a crunched output to \
 out_path.\n\n\
 OPTIONS:\n\
+\t-f, --force\t\tSilently overwrite output file if it exists\n\
 \t-h, --help\t\tPrints this help message and exits\n\
 \t-l, --loss=LEVEL\tSets the loss level (default 10)\n\
 \t-v, --version\t\tPrints version info and exits\n"
