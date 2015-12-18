@@ -18,6 +18,7 @@
 #include <ctype.h>
 #include <pfxtree.h>
 #include <sndfile.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -196,7 +197,7 @@ sc_crunch (const char *in_path, const char *out_path, unsigned short loss)
     {
       for (int channel = 0; channel < in_info.channels; ++channel)
 	{
-	  long avg = 0;
+	  intmax_t avg = 0;
 
 	  for (unsigned short i = 0; i < read; ++i)
 	    avg += frame[channel + (i * in_info.channels)];
