@@ -76,7 +76,6 @@ init_formats ()
     }
 
   ADD ("aif", SF_FORMAT_AIFF | SF_FORMAT_PCM_16);
-  ADD ("aifc", SF_FORMAT_AIFF | SF_FORMAT_PCM_16);
   ADD ("aiff", SF_FORMAT_AIFF | SF_FORMAT_PCM_16);
 
   ADD ("au", SF_FORMAT_AU | SF_FORMAT_PCM_16);
