@@ -11,7 +11,7 @@ Autotools, pkg-config, and libsndfile. On Debian-based systems, you can get
 these like so:
 
     # apt-get install build-essential automake autoconf pkg-config
-    # apt-get install libsndfile-dev
+    # apt-get install libsndfile1-dev
 
 You also need Delwink's
 [libpfxtree](http://delwink.com/software/libpfxtree.html). Follow its
