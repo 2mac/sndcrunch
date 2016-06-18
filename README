@@ -60,9 +60,7 @@ purpose of this program.
 The minimum loss level of 1 would actually leave the input unaltered. Since any
 combination of the input and output extensions is allowed, you could actually
 use sndcrunch as a simple audio converter if you wanted, but it only outputs
-16-bit audio, so it would not be the ideal transcoder (actually, it's however
-long the `short` type is on your implementation, but libsndfile assumes that it
-will be 16 bits; perhaps consider complaining to the author of that library).
+16-bit audio, so it would not be the ideal transcoder.
 
 For more information on sndcrunch's CLI, use `--help`.
 
