@@ -1,6 +1,6 @@
 /*
  *  sndcrunch - A simple audio bit crunching tool
- *  Copyright (C) 2015 David McMackins II
+ *  Copyright (C) 2015-2016 David McMackins II
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as published by
@@ -29,7 +29,7 @@ const char *
 sc_error_string (int rc);
 
 int
-sc_crunch (const char *in_path, const char *out_path, unsigned short depth);
+sc_crunch (const char *in_path, const char *out_path, unsigned int depth);
 
 void
 sc_cleanup (void);

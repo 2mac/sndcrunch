@@ -1,6 +1,6 @@
 /*
  *  sndcrunch - A simple audio bit crunching tool
- *  Copyright (C) 2015 David McMackins II
+ *  Copyright (C) 2015-2016 David McMackins II
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as published by
@@ -94,10 +94,10 @@ init_formats ()
 }
 
 int
-sc_crunch (const char *in_path, const char *out_path, unsigned short loss)
+sc_crunch (const char *in_path, const char *out_path, unsigned int loss)
 {
   int rc = 0;
-  short *frame = NULL;
+  int *frame = NULL;
   SNDFILE *in_file = NULL, *out_file = NULL;
 
   if (!in_path || !out_path)
@@ -169,7 +169,7 @@ sc_crunch (const char *in_path, const char *out_path, unsigned short loss)
 
       if (SF_STR_SOFTWARE == type)
 	{
-	  sprintf (sw, "%s at loss level %hu", VERSION_STRING, loss);
+	  sprintf (sw, "%s at loss level %u", VERSION_STRING, loss);
 	  orig_string = sw;
 	}
       else
@@ -184,7 +184,7 @@ sc_crunch (const char *in_path, const char *out_path, unsigned short loss)
 	goto end;
     }
 
-  frame = malloc ((in_info.channels * loss) * sizeof (short));
+  frame = malloc ((in_info.channels * loss) * sizeof (int));
   if (!frame)
     {
       rc = SC_EALLOC;
@@ -192,22 +192,22 @@ sc_crunch (const char *in_path, const char *out_path, unsigned short loss)
     }
 
   sf_count_t read;
-  while ((read = sf_readf_short (in_file, frame, loss)))
+  while ((read = sf_readf_int (in_file, frame, loss)))
     {
       for (int channel = 0; channel < in_info.channels; ++channel)
 	{
 	  intmax_t avg = 0;
 
-	  for (unsigned short i = 0; i < read; ++i)
+	  for (sf_count_t i = 0; i < read; ++i)
 	    avg += frame[channel + (i * in_info.channels)];
 
 	  avg /= read;
 
-	  for (unsigned short i = 0; i < read; ++i)
-	    frame[channel + (i * in_info.channels)] = (short) avg;
+	  for (sf_count_t i = 0; i < read; ++i)
+	    frame[channel + (i * in_info.channels)] = (int) avg;
 	}
 
-      sf_count_t written = sf_writef_short (out_file, frame, read);
+      sf_count_t written = sf_writef_int (out_file, frame, read);
       if (written != read)
 	{
 	  rc = sf_error (out_file);

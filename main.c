@@ -1,6 +1,6 @@
 /*
  *  sndcrunch - A simple audio bit crunching tool
- *  Copyright (C) 2015 David McMackins II
+ *  Copyright (C) 2015-2016 David McMackins II
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as published by
@@ -47,7 +47,7 @@ OPTIONS:\n\
 \t-v, --version\t\tPrints version info and exits\n"
 
 #define VERSION_INFO VERSION_STRING "\n\
-Copyright (C) 2015 David McMackins II\n\
+Copyright (C) 2015-2016 David McMackins II\n\
 License AGPLv3: GNU AGPL version 3 only <http://gnu.org/licenses/agpl.html>.\n\
 This is libre software: you are free to change and redistribute it.\n\
 There is NO WARRANTY, to the extent permitted by law.\n\n\
@@ -85,7 +85,7 @@ main (int argc, char *argv[])
 {
   bool force = false;
   int rc = 0;
-  unsigned short loss = 10;
+  unsigned int loss = 10;
 
   struct option longopts[] =
     {
@@ -122,10 +122,10 @@ main (int argc, char *argv[])
 		  return 3;
 		}
 
-	      if (temploss < 1 || temploss > USHRT_MAX)
+	      if (temploss < 1 || temploss > UINT_MAX)
 		{
 		  fprintf (stderr, PROG ": Loss level must be between 1 and "
-			   "%hu\n", USHRT_MAX);
+			   "%u\n", UINT_MAX);
 		  return 3;
 		}
 
