@@ -17,7 +17,6 @@
 
 #include <ctype.h>
 #include <errno.h>
-#include <limits.h>
 #include <sndfile.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -122,10 +121,10 @@ main (int argc, char *argv[])
 		  return 3;
 		}
 
-	      if (temploss < 1 || temploss > UINT_MAX)
+	      if (temploss < 1 || temploss > SC_MAX_LOSS)
 		{
 		  fprintf (stderr, PROG ": Loss level must be between 1 and "
-			   "%u\n", UINT_MAX);
+			   "%u\n", SC_MAX_LOSS);
 		  return 3;
 		}
 

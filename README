@@ -45,6 +45,7 @@ The formats supported by sndcrunch are:
 - FLAC with the extension flac
 - Ogg Vorbis with the extension ogg
 - WAV with the extensions wav and wave
+- XI with the extension xi
 
 The trickiest part of using sndcrunch is setting the right loss level. It can
 be set using the `-l` or `--loss` options as so:

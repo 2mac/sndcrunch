@@ -22,14 +22,18 @@ enum sc_error
   {
     SC_EALLOC    = -1,
     SC_ENULLPATH = -2,
-    SC_ESAMEPATH = -3
+    SC_ESAMEPATH = -3,
+    SC_EZEROLOSS = -4,
+    SC_EHIGHLOSS = -5
   };
+
+#define SC_MAX_LOSS (1000)
 
 const char *
 sc_error_string (int rc);
 
 int
-sc_crunch (const char *in_path, const char *out_path, unsigned int depth);
+sc_crunch (const char *in_path, const char *out_path, unsigned int loss);
 
 void
 sc_cleanup (void);
