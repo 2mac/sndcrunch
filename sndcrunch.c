@@ -214,13 +214,13 @@ sc_crunch (const char *in_path, const char *out_path, unsigned int loss)
       {
 	if (1 == out_info.channels && 2 == in_info.channels)
 	  {
-	    for (sf_count_t i = 0; i < num_read; ++i)
-	      {
-		int *p = &frames[i * 2];
+	    int *p;
+	    sf_count_t i;
 
-		intmax_t left = p[0];
-		intmax_t right = p[1];
-		intmax_t sum = left + right;
+	    for (i = 0, p = frames; i < num_read; ++i, p += 2)
+	      {
+		intmax_t sum = p[0];
+		sum += p[1];
 		sum /= 2;
 
 		frames[i] = (int) sum;

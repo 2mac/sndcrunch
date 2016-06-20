@@ -1,5 +1,5 @@
 AC_PREREQ([2.60])
-AC_INIT([sndcrunch],[2.0.0],[contact@mcmackins.org])
+AC_INIT([sndcrunch],[2.0.1],[contact@mcmackins.org])
 
 AC_CONFIG_SRCDIR([main.c])
 AC_CONFIG_AUX_DIR([build-aux])
