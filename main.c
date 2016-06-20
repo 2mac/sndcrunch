@@ -71,9 +71,8 @@ check_file_error (const char *path, const char *mode)
   FILE *f = fopen (path, mode);
   if (!f)
     {
-      int rc = errno;
-      fprintf (stderr, PROG ": %s: %s\n", path, strerror (rc));
-      exit (rc);
+      fprintf (stderr, PROG ": %s: %s\n", path, strerror (errno));
+      exit (1);
     }
 
   fclose (f);
@@ -118,14 +117,14 @@ main (int argc, char *argv[])
 		{
 		  fprintf (stderr, PROG ": %s is not a valid number\n",
 			   optarg);
-		  return 3;
+		  return 1;
 		}
 
 	      if (temploss < 1 || temploss > SC_MAX_LOSS)
 		{
 		  fprintf (stderr, PROG ": Loss level must be between 1 and "
 			   "%u\n", SC_MAX_LOSS);
-		  return 3;
+		  return 1;
 		}
 
 	      loss = temploss;
@@ -136,7 +135,7 @@ main (int argc, char *argv[])
 	      return 0;
 
 	    case '?':
-	      return 2;
+	      return 1;
 	    }
 	}
     }
@@ -152,7 +151,7 @@ main (int argc, char *argv[])
       printf ("%s exists. Overwrite? [y/N] ", out_path);
       int c = tolower (getchar ());
       if ('y' != c)
-	return 4;
+	return 1;
 
       while (c != '\n')
 	c = getchar (); // clear input line
@@ -168,7 +167,7 @@ main (int argc, char *argv[])
 	}
 
       fprintf (stderr, PROG ": %s\n", sc_error_string (rc));
-      return rc;
+      return 1;
     }
 
   sc_cleanup ();
