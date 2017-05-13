@@ -68,10 +68,7 @@ For more information on sndcrunch's CLI, use `--help`.
 Hacking
 -------
 
-sndcrunch uses the GNU coding style for C with a strict 79-column limit in the
-source code. Indentations are two spaces, and tab characters are eight
-spaces. It is polite to use a tab character any time eight spaces would be used
-in an indentation, but it is not required.
+Match the style you see in the code. Do not use spaces for indentation.
 
 License
 -------
