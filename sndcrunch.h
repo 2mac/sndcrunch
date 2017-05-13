@@ -18,7 +18,7 @@
 #ifndef SNDCRUNCH_H
 #define SNDCRUNCH_H
 
-#define VERSION_STRING "sndcrunch 2.0.2"
+#define VERSION_STRING "sndcrunch 3.0.0"
 
 enum sc_error
 {
