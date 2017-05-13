@@ -1,6 +1,6 @@
 /*
  *  sndcrunch - A simple audio bit crunching tool
- *  Copyright (C) 2015-2016 David McMackins II
+ *  Copyright (C) 2015-2017 David McMackins II
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as published by
@@ -27,149 +27,140 @@
 
 #include "sndcrunch.h"
 
-#ifdef HAVE_CONFIG_H
-# include "config.h"
-# define VERSION_STRING PACKAGE_STRING
-# define PROG PACKAGE
-#else
-# define VERSION_STRING "sndcrunch custom build"
-# define PROG "sndcrunch"
-#endif
+#define PROG "sndcrunch"
 
 #define USAGE_INFO "USAGE: " PROG " [options] <in_path> <out_path>\n\n"	\
-  PROG " reads the audio file in_file and writes a crunched output to \
+	PROG " reads the audio file in_file and writes a crunched output to \
 out_path.\n\n\
 OPTIONS:\n\
-\t-f, --force\t\tSilently overwrite output file if it exists\n\
-\t-h, --help\t\tPrints this help message and exits\n\
-\t-l, --loss=LEVEL\tSets the loss level (default 10)\n\
-\t-v, --version\t\tPrints version info and exits\n"
+\t-f\tSilently overwrite output file if it exists\n\
+\t-h\tPrints this help message and exits\n\
+\t-l\tSets the loss level (default 10)\n\
+\t-v\tPrints version info and exits\n"
 
 #define VERSION_INFO VERSION_STRING "\n\
-Copyright (C) 2015-2016 David McMackins II\n\
+Copyright (C) 2015-2017 David McMackins II\n\
 License AGPLv3: GNU AGPL version 3 only <http://gnu.org/licenses/agpl.html>.\n\
 This is libre software: you are free to change and redistribute it.\n\
 There is NO WARRANTY, to the extent permitted by law.\n\n\
-Written by David McMackins II."
+Written by David McMackins II.\n"
 
 static void
-usage (int rc)
+usage(int rc)
 {
-  puts (USAGE_INFO);
-  exit (rc);
+	fprintf(stderr, USAGE_INFO);
+	exit(rc);
 }
 
 static bool
-fexists (const char *path)
+fexists(const char *path)
 {
-  return 0 == access (path, F_OK);
+	return 0 == access(path, F_OK);
 }
 
 static void
-check_file_error (const char *path, const char *mode)
+check_file_error(const char *path, const char *mode)
 {
-  FILE *f = fopen (path, mode);
-  if (!f)
-    {
-      fprintf (stderr, PROG ": %s: %s\n", path, strerror (errno));
-      exit (1);
-    }
+	FILE *f = fopen(path, mode);
+	if (!f)
+	{
+		fprintf(stderr, PROG ": %s: %s\n", path, strerror(errno));
+		exit(1);
+	}
 
-  fclose (f);
+	fclose(f);
 }
 
 int
-main (int argc, char *argv[])
+main(int argc, char *argv[])
 {
-  bool force = false;
-  int rc = 0;
-  unsigned int loss = 10;
+	bool force = false;
+	int rc = 0;
+	unsigned int loss = 10;
 
-  struct option longopts[] =
-    {
-      {"help", no_argument, 0, 'h'},
-      {"force", no_argument, 0, 'f'},
-      {"loss", required_argument, 0, 'l'},
-      {"version", no_argument, 0, 'v'},
-      {0, 0, 0, 0}
-    };
-
-  if (argc > 1)
-    {
-      int c, longindex;
-      while ((c = getopt_long (argc, argv, "hfl:v", longopts, &longindex))
-	     != -1)
+	if (argc > 1)
 	{
-	  unsigned long temploss;
-
-	  switch (c)
-	    {
-	    case 'h':
-	      usage (0);
-
-	    case 'f':
-	      force = true;
-	      break;
-
-	    case 'l':
-	      rc = sscanf (optarg, "%lu", &temploss);
-	      if (rc != 1)
+		int c;
+		while ((c = getopt(argc, argv, ":hfl:v")) != -1)
 		{
-		  fprintf (stderr, PROG ": %s is not a valid number\n",
-			   optarg);
-		  return 1;
+			unsigned long temploss;
+
+			switch (c)
+			{
+			case 'h':
+				usage(0);
+
+			case 'f':
+				force = true;
+				break;
+
+			case 'l':
+				rc = sscanf(optarg, "%lu", &temploss);
+				if (rc != 1)
+				{
+					fprintf(stderr,
+						PROG ": %s is not a valid number\n",
+						optarg);
+					return 1;
+				}
+
+				if (temploss < 1 || temploss > SC_MAX_LOSS)
+				{
+					fprintf(stderr,
+						PROG ": Loss level must be between 1 and %u\n",
+						SC_MAX_LOSS);
+					return 1;
+				}
+
+				loss = temploss;
+				break;
+
+			case 'v':
+				printf(VERSION_INFO);
+				return 0;
+
+			case ':':
+				fprintf(stderr,
+					PROG ": option -%c requires an argument\n",
+					optopt);
+				// SPILLS OVER!
+
+			case '?':
+				usage(1);
+			}
 		}
-
-	      if (temploss < 1 || temploss > SC_MAX_LOSS)
-		{
-		  fprintf (stderr, PROG ": Loss level must be between 1 and "
-			   "%u\n", SC_MAX_LOSS);
-		  return 1;
-		}
-
-	      loss = temploss;
-	      break;
-
-	    case 'v':
-	      puts (VERSION_INFO);
-	      return 0;
-
-	    case '?':
-	      return 1;
-	    }
-	}
-    }
-
-  if ((argc - optind) != 2)
-    usage (1);
-
-  const char *in_path = argv[optind];
-  const char *out_path = argv[optind + 1];
-
-  if (!force && fexists (out_path))
-    {
-      printf ("%s exists. Overwrite? [y/N] ", out_path);
-      int c = tolower (getchar ());
-      if ('y' != c)
-	return 1;
-
-      while (c != '\n')
-	c = getchar (); // clear input line
-    }
-
-  rc = sc_crunch (in_path, out_path, loss);
-  if (rc)
-    {
-      if (SF_ERR_SYSTEM == rc)
-	{
-	  check_file_error (in_path, "r");
-	  check_file_error (out_path, "a");
 	}
 
-      fprintf (stderr, PROG ": %s\n", sc_error_string (rc));
-      return 1;
-    }
+	if ((argc - optind) != 2)
+		usage(1);
 
-  sc_cleanup ();
-  return 0;
+	const char *in_path = argv[optind];
+	const char *out_path = argv[optind + 1];
+
+	if (!force && fexists(out_path))
+	{
+		printf("%s exists. Overwrite? [y/N] ", out_path);
+		int c = tolower(getchar());
+		if ('y' != c)
+			return 1;
+
+		while (c != '\n')
+			c = getchar(); // clear input line
+	}
+
+	rc = sc_crunch(in_path, out_path, loss);
+	if (rc)
+	{
+		if (SF_ERR_SYSTEM == rc)
+		{
+			check_file_error(in_path, "r");
+			check_file_error(out_path, "a");
+		}
+
+		fprintf(stderr, PROG ": %s\n", sc_error_string(rc));
+		return 1;
+	}
+
+	sc_cleanup();
+	return 0;
 }
