@@ -6,21 +6,16 @@ A simple audio bit crunching tool.
 To Build
 --------
 
-You must first satisfy the dependencies. You need a C compiler, the GNU
-Autotools, pkg-config, and libsndfile. On Debian-based systems, you can get
-these like so:
+You must first satisfy the dependencies. You need a C99 compiler and
+libsndfile. On Debian-based systems, you can get these like so:
 
-    # apt-get install build-essential automake autoconf pkg-config
-    # apt-get install libsndfile1-dev
+    # apt-get install build-essential libsndfile1-dev
 
 You also need Delwink's
 [libpfxtree](http://delwink.com/software/libpfxtree.html). Follow its
 instructions for installation.
 
-sndcrunch uses the GNU build process:
-
-    $ ./autogen.sh
-    $ ./configure
+sndcrunch uses a simple build process:
     $ make
 
 To Install
@@ -48,9 +43,9 @@ The formats supported by sndcrunch are:
 - XI with the extension xi
 
 The trickiest part of using sndcrunch is setting the right loss level. It can
-be set using the `-l` or `--loss` options as so:
+be set using the `-l` option as so:
 
-    $ sndcrunch --loss 5 infile.flac outfile.ogg
+    $ sndcrunch -l 5 infile.flac outfile.ogg
 
 Each sound input seems to have its own "sweet spot" where the output is most
 ideal. A loss level too high produces unpleasant noise, and a loss level too
@@ -63,7 +58,7 @@ combination of the input and output extensions is allowed, you could actually
 use sndcrunch as a simple audio converter if you wanted, but it only outputs
 16-bit audio, so it would not be the ideal transcoder.
 
-For more information on sndcrunch's CLI, use `--help`.
+For more information on sndcrunch's CLI, use `-h`.
 
 Hacking
 -------
