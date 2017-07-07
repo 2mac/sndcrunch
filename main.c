@@ -30,7 +30,7 @@
 #define PROG "sndcrunch"
 
 #define USAGE_INFO "USAGE: " PROG " [options] <in_path> <out_path>\n\n"	\
-	PROG " reads the audio file in_file and writes a crunched output to \
+	PROG " reads the audio file in_path and writes a crunched output to \
 out_path.\n\n\
 OPTIONS:\n\
 \t-f\tSilently overwrite output file if it exists\n\
